@@ -2,6 +2,8 @@
 import './App.css'
 import { Box } from '@chakra-ui/react'
 import Home from './pages/Home'
+import { Provider } from "react-redux";
+import store from './store/store';
 function App() {
 
   return (
@@ -10,8 +12,14 @@ function App() {
         w="100vw"
         h="100vh"
         bgColor="white"
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
       >
-        <Home />
+        <Provider store={store}>
+          <Home />
+        </Provider>
+
       </Box>
     </>
   )
