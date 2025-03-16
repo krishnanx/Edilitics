@@ -22,9 +22,9 @@ function App() {
       <Box
         w="100vw"
         h="100vh"
-        bgColor="white"
-        display="flex"
 
+        display="flex"
+        bgColor="white"
         flexDirection="column"
       >
         <Provider store={store}>

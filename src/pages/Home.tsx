@@ -65,6 +65,7 @@ const Home = () => {
             w="90%"
             h="900px"
             flexDirection="column"
+
         >
             <Box position="relative" width="1250px" maxW="4000px" mx="auto" h="100px" justifyContent="center" alignItems="center">
                 {/* Left Scroll Button */}
