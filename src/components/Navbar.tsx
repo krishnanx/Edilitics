@@ -1,20 +1,32 @@
 import { Box, Heading } from "@chakra-ui/react"
 import Switch from "./ToggleSwitch"
+import { useSelector } from "react-redux";
 const Navbar = () => {
+    interface modeState {
+        mode: string; // or whatever type `data` holds
+
+    }
+
+    interface RootState {
+        mode: modeState;
+    }
+    const { mode } = useSelector(
+        (state: RootState) => state.mode || { mode: "light" }
+    ) as modeState;
     return (
         <Box
             w="100%"
             h="70px"
             display="flex"
             alignItems="center"
+            bgColor={mode == "dark" ? "rgba(12, 12, 12,0.9)" : "white"}
 
-            bgColor="rgba(255,255,255,0.05)"
         >
             <Box
                 w="25%"
             >
                 <Heading
-                    color="black"
+                    color={mode !== "dark" ? "black" : "white"}
                     fontFamily="fantasy"
                     w="300px"
                     fontSize="2rem"

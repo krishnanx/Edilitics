@@ -5,9 +5,14 @@ import { Box } from "@chakra-ui/react";
 import Loader from "./Loader";
 import { getData } from "../store/DataSlice";
 import { AppDispatch } from "../store/store";
+import { addTip } from "../store/TooltipSlice";
 interface DataPoint {
     date: Date;
     close: number;
+    open: number;
+    high: number;
+    low: number;
+    volume: number;
 }
 // const aapl: DataPoint[] = [
 //     { date: new Date("2007-04-23"), close: 93.24 },
@@ -35,6 +40,17 @@ interface DataPoint {
 const LineChart: React.FC = () => {
     const chartRef = useRef<SVGSVGElement>(null);
     const dispatch = useDispatch<AppDispatch>();
+    interface modeState {
+        mode: string; // or whatever type `data` holds
+
+    }
+
+    interface RootState {
+        mode: modeState;
+    }
+    const { mode } = useSelector(
+        (state: RootState) => state.mode || { mode: "dark" }
+    ) as modeState;
     interface dataState {
         data: []; // or whatever type `data` holds
         status: string
@@ -46,22 +62,33 @@ const LineChart: React.FC = () => {
     const { data, status } = useSelector(
         (state: RootState) => state.data
     ) as dataState;
+    interface revised {
+        point: DataPoint[]
+        raw: any[]
+    }
     useEffect(() => { dispatch(getData({ company: "A" })); }, [])
     useEffect(() => {
 
         const convertToDataPoints = (data: any[]): DataPoint[] => {
             return data.map(entry => ({
                 date: new Date(entry.Date),
-                close: entry.Close
+                close: entry.Close,
+                open: entry.Open,
+                low: entry.Low,
+                high: entry.High,
+                volume: entry.Volume
             }));
         };
 
         // Convert the data
         const aapl: DataPoint[] = convertToDataPoints(data);
+
+        // const aapl = fullData.filter(({ date, close }) => date && close !== undefined)
+        //     .map(({ date, close }) => ({ date, close }));
         if (!aapl || !chartRef.current) return;
         console.log("aapl:", aapl)
-        const width = 928;
-        const height = 500;
+        const width = 1200;
+        const height = 600;
         const marginTop = 20;
         const marginRight = 30;
         const marginBottom = 30;
@@ -101,7 +128,7 @@ const LineChart: React.FC = () => {
             .attr("transform", `translate(0,${height - marginBottom})`)
             .call(d3.axisBottom(x).ticks(width / 80).tickSizeOuter(0))
             .selectAll("text")
-            .style("fill", "black")
+            .style("fill", mode === "dark" ? "white" : "black")
             .style("font-size", "12px");
 
         svg.append("g")
@@ -118,15 +145,15 @@ const LineChart: React.FC = () => {
                 .attr("text-anchor", "start")
                 .text("↑ Daily close ($)"))
             .selectAll("text")
-            .style("fill", "black")
+            .style("fill", mode === "dark" ? "white" : "black")
             .style("font-size", "12px");
         svg.selectAll(".domain")
-            .style("stroke", "black")
+            .style("stroke", mode === "dark" ? "white" : "black")
             .style("stroke-width", "1px");
         const path = svg.append("path")
             .datum(aapl)
             .attr("fill", "none")
-            .attr("stroke", "steelblue")
+            .attr("stroke", mode === "dark" ? "#6A9BC3" : "steelblue")
             .attr("stroke-width", 1.5)
             .attr("d", line);
         // Get total length for stroke animation
@@ -140,13 +167,71 @@ const LineChart: React.FC = () => {
             .duration(750)
             .ease(d3.easeLinear)
             .attr("stroke-dashoffset", 0);
+        const tooltip = d3.select("body")
+            .append("div")
+            .attr("class", "tooltip")
+            .style("position", "absolute")
+            .style("background", "white")
+            .style("border", "1px solid #ddd")
+            .style("padding", "5px")
+            .style("border-radius", "5px")
+            .style("box-shadow", "0 0 5px rgba(0,0,0,0.3)")
+            .style("pointer-events", "none")
+            .style("opacity", 0)
+            .style("color", "black") // Ensure text is black
+            .style("font-size", "12px")
+            .style("z-index", "10"); // Ensure tooltip stays on top
 
-    }, [data]);
+
+
+        svg.selectAll("circle")
+            .data(aapl)
+            .enter()
+            .append("circle")
+            .attr("cx", d => x(d.date))
+            .attr("cy", d => y(d.close))
+            .attr("r", 5)
+            .attr("fill", "transparent")
+            .on("mouseover", (event, d) => {
+                tooltip
+                    .html(`Date: ${d.date.toLocaleDateString()}<br>Close: $${d.close.toFixed(2)}`)
+                    .style("left", `${event.pageX + 10}px`)
+                    .style("top", `${event.pageY - 20}px`)
+                    .transition()
+                    .duration(200)
+                    .style("opacity", 1);
+            })
+            .on("mousemove", (event) => {
+                tooltip
+                    .style("left", `${event.pageX + 10}px`)
+                    .style("top", `${event.pageY - 20}px`);
+            })
+            .on("mouseout", () => {
+                tooltip.transition().duration(200).style("opacity", 0);
+            })
+            .on("click", (event, d) => {
+
+                const dateString = d.date.toLocaleDateString('en-US');
+                console.log(dateString)
+                const object = {
+                    open: d.open,
+                    close: d.close,
+                    high: d.high,
+                    low: d.low,
+                    volume: d.volume,
+                    date: dateString
+                }
+                dispatch(addTip(
+                    object
+                ))
+            })
+    }, [data, mode]);
 
     return (
         <Box>
             {status == 'loading' ? (<Box
-                w="928px"
+                w="1200px"
+                h="600px"
                 display="flex"
                 justifyContent="center"
                 alignItems="center"
