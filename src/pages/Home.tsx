@@ -11,6 +11,7 @@ import { getData } from '../store/DataSlice'
 import { useNavigate } from 'react-router-dom';
 
 import { useRef, useState } from 'react';
+import Loader from '../components/Loader';
 //import { addCompany } from '../store/CompanySlice'
 const Home = () => {
     const navigate = useNavigate();
@@ -126,7 +127,7 @@ const Home = () => {
                 w="100%"
                 h="100%"
             >
-                <Box
+                {status !== "loading" ? <Box
                     w="20%"
                     h="700px"
                     display="flex"
@@ -231,7 +232,17 @@ const Home = () => {
                             {tip.volume ? tip.volume.toFixed(2) : data[data.length - 1]?.Volume.toFixed(2)}
                         </Heading>
                     </Box>
-                </Box>
+                </Box> : <Box
+                    w="20%"
+                    h="700px"
+                    display="flex"
+                    flexDirection="column"
+                    justifyContent="center"
+                    alignItems="center"
+                    pl="20px"
+                >
+                    <Loader />
+                </Box>}
                 <Box
                     w="70%"
                     h="800px"
