@@ -4,7 +4,6 @@ import { useSelector } from "react-redux";
 import { Box } from "@chakra-ui/react";
 import Loader from "./Loader";
 
-
 interface DataPoint {
     date: Date;
     open: number;
@@ -17,21 +16,20 @@ interface DataPoint {
 const CandlestickBarChart: React.FC = () => {
     const chartRef = useRef<SVGSVGElement>(null);
 
-
-    interface dataState {
-        data: [];
-        status: string;
+    interface modeState {
+        mode: string;
     }
 
     interface RootState {
-        data: dataState;
+        mode: modeState;
+        data: {
+            data: any[];
+            status: string;
+        };
     }
 
-    const { data, status } = useSelector(
-        (state: RootState) => state.data
-    ) as dataState;
-
-
+    const { mode } = useSelector((state: RootState) => state.mode || { mode: "light" });
+    const { data, status } = useSelector((state: RootState) => state.data);
 
     useEffect(() => {
         const convertToDataPoints = (data: any[]): DataPoint[] => {
@@ -45,11 +43,12 @@ const CandlestickBarChart: React.FC = () => {
             }));
         };
 
-        const stockData: DataPoint[] = convertToDataPoints(data);
+        let stockData: DataPoint[] = convertToDataPoints(data);
+        stockData = stockData.slice(-50);
         if (!stockData || !chartRef.current) return;
-        const latest30Days = stockData.slice(-30);
-        const width = 928;
-        const height = 500;
+
+        const width = 1950;
+        const height = 900;
         const margin = { top: 20, right: 30, bottom: 30, left: 40 };
         const barHeight = 100;
 
@@ -62,71 +61,133 @@ const CandlestickBarChart: React.FC = () => {
             .style("max-width", "100%")
             .style("height", "auto");
 
-        const x = d3.scaleUtc(
-            d3.extent(latest30Days, (d) => d.date) as [Date, Date],
-            [margin.left, width - margin.right]
-        );
+        const g = svg.append("g");
 
-        const y = d3.scaleLinear(
-            [d3.min(latest30Days, (d) => d.low) as number, d3.max(latest30Days, (d) => d.high) as number],
-            [height - margin.bottom, margin.top]
-        );
+        // Initial x and y scales
+        const x = d3.scaleUtc()
+            .domain(d3.extent(stockData, (d) => d.date) as [Date, Date])
+            .range([margin.left, width - margin.right]);
 
-        const yVolume = d3.scaleLinear(
-            [0, d3.max(latest30Days, (d) => d.volume) as number],
-            [height + barHeight - 20, height]
-        );
+        const y = d3.scaleLinear()
+            .domain([d3.min(stockData, (d) => d.low) as number, d3.max(stockData, (d) => d.high) as number])
+            .range([height - margin.bottom, margin.top]);
 
-        const xAxis = svg.append("g")
+        const yVolume = d3.scaleLinear()
+            .domain([0, d3.max(stockData, (d) => d.volume) as number])
+            .range([height - margin.bottom, height - barHeight]);
+
+        // x and y axes
+        const xAxis = g.append("g")
             .attr("transform", `translate(0,${height - margin.bottom})`)
             .call(d3.axisBottom(x).ticks(width / 80).tickSizeOuter(0));
+
         xAxis.selectAll("text")
-            .style("fill", "black")
+            .style("fill", mode === "dark" ? "white" : "black")
             .style("font-size", "12px");
-        const yAxis = svg.append("g")
+
+        const yAxis = g.append("g")
             .attr("transform", `translate(${margin.left},0)`)
             .call(d3.axisLeft(y).ticks(height / 40));
+
         yAxis.selectAll("text")
-            .style("fill", "black")
+            .style("fill", mode === "dark" ? "white" : "black")
             .style("font-size", "12px");
-        const candle = svg.append("g")
-            .selectAll("g")
-            .data(latest30Days)
-            .join("g")
-            .attr("transform", (d) => `translate(${x(d.date)},0)`);
 
-        candle.append("line")
-            .attr("y1", (d) => y(d.low))
-            .attr("y2", (d) => y(d.high))
-            .attr("stroke", "black");
+        // Draw chart based on x-scale domain
+        const drawChart = () => {
+            // Clear existing chart
+            g.selectAll(".candle").remove();
+            g.selectAll(".volume").remove();
 
-        candle.append("rect")
-            .attr("y", (d) => y(Math.max(d.open, d.close)))
-            .attr("height", (d) => Math.abs(y(d.open) - y(d.close)))
-            .attr("width", 5)
-            .attr("fill", (d) => (d.open > d.close ? "#e63946" : "#2a9d8f"));
+            // Filter data within the current x-domain
+            const visibleData = stockData.filter(d =>
+                d.date >= x.domain()[0] && d.date <= x.domain()[1]
+            );
 
-        svg.append("g")
-            .selectAll("rect")
-            .data(latest30Days)
-            .join("rect")
-            .attr("x", (d) => x(d.date) - 2.5)
-            .attr("y", (d) => yVolume(d.volume))
-            .attr("width", 5)
-            .attr("height", (d) => height + barHeight - yVolume(d.volume) - 20)
-            .attr("fill", "#a8dadc")
+            // Candle group
+            const candle = g.append("g")
+                .selectAll("g")
+                .data(visibleData)
+                .join("g")
+                .attr("class", "candle")
+                .attr("transform", (d) => `translate(${x(d.date)},0)`);
 
-        svg.selectAll(".domain")
-            .style("stroke", "black")
-            .style("stroke-width", "1px");
-    }, [data]);
+            // Candle wicks
+            candle.append("line")
+                .attr("y1", (d) => y(d.low))
+                .attr("y2", (d) => y(d.high))
+                .attr("stroke", mode === "dark" ? "white" : "black");
+
+            // Candle bodies
+            candle.append("rect")
+                .attr("y", (d) => y(Math.max(d.open, d.close)))
+                .attr("height", (d) => Math.abs(y(d.open) - y(d.close)))
+                .attr("width", 5)
+                .attr("fill", (d) => (d.open > d.close ? "#e63946" : "#2a9d8f"));
+
+            // Volume bars
+            const barWidth = 10;
+            g.append("g")
+                .selectAll("rect")
+                .data(visibleData)
+                .join("rect")
+                .attr("class", "volume")
+                .attr("x", (d) => x(d.date) - barWidth / 2)
+                .attr("y", (d) => yVolume(d.volume))
+                .attr("width", barWidth)
+                .attr("height", (d) => yVolume(0) - yVolume(d.volume))
+                .attr("fill", (d) => (d.close >= d.open ? "#4caf50" : "#f44336"));
+        };
+
+        // Draw the chart initially
+        drawChart();
+
+        svg.on("wheel", (event) => {
+            event.preventDefault();
+
+            const { deltaY } = event;
+            const direction = deltaY > 0 ? 1.1 : 0.9;
+
+            // X-Axis Scaling (Keep Last Element Visible)
+            const [xStart, xEnd] = x.domain();
+            const newXDomain = [
+                new Date(xEnd.getTime() - (xEnd.getTime() - xStart.getTime()) * direction),
+                xEnd, //Fixes the last element in place
+            ];
+
+            if (newXDomain[0] < stockData[0].date) newXDomain[0] = stockData[0].date;
+
+            x.domain(newXDomain);
+
+            // Filter data for visible range
+            const visibleData = stockData.filter(
+                (d) => d.date >= newXDomain[0] && d.date <= newXDomain[1]
+            );
+
+            if (visibleData.length > 0) {
+                const yMin = d3.min(visibleData, (d) => d.low) as number;
+                const yMax = d3.max(visibleData, (d) => d.high) as number;
+
+                // Stretch Y-axis with padding but keep the last element visible
+                const padding = (yMax - yMin) * 0.2;
+                y.domain([yMin - padding, yMax + padding]);
+            }
+
+            // Update axes
+            xAxis.call(d3.axisBottom(x).ticks(width / 80).tickSizeOuter(0));
+            yAxis.call(d3.axisLeft(y).ticks(height / 40));
+
+            // Redraw chart
+            drawChart();
+        });
+
+
+
+    }, [data, mode]);
+
 
     return (
-        <Box
-            display="flex"
-            justifyContent="center"
-            alignItems="center"
-        >
+        <Box display="flex" justifyContent="center" alignItems="center">
             {status === "loading" ? (
                 <Box w="928px" display="flex" justifyContent="center" alignItems="center">
                     <Loader />

@@ -225,6 +225,7 @@ const LineChart: React.FC = () => {
                     object
                 ))
             })
+
     }, [data, mode]);
 
     return (

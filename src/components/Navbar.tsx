@@ -16,7 +16,7 @@ const Navbar = () => {
     return (
         <Box
             w="100%"
-            h="70px"
+            h="80px"
             display="flex"
             alignItems="center"
             bgColor={mode == "dark" ? "rgba(12, 12, 12,0.9)" : "white"}
