@@ -45,17 +45,17 @@ const Home = () => {
         Volume: number;
         company: string;
     }
-    // interface dataState {
-    //     data: DataPoint[]; // or whatever type `data` holds
-    //     status: string
-    // }
+    interface dataState {
+        data: DataPoint[]; // or whatever type `data` holds
+        status: string
+    }
 
-    // interface State {
-    //     data: dataState;
-    // }
-    // const { data, status } = useSelector(
-    //     (state: State) => state.data
-    // ) as dataState;
+    interface State {
+        data: dataState;
+    }
+    const { data, status } = useSelector(
+        (state: State) => state.data
+    ) as dataState;
     interface TipData {
         open: number;
         close: number;
@@ -145,7 +145,8 @@ const Home = () => {
                         >
                             {
                                 // Ensure tip.date is a valid string and format it to show month, day, and year
-                                `${new Date(String(tip.date)).toLocaleString('default', { month: 'short' })} ${new Date(String(tip.date)).getDate()}  ${new Date(String(tip.date)).getFullYear()}`
+                                tip.date ? `${new Date(String(tip.date)).toLocaleString('default', { month: 'short' })} ${new Date(String(tip.date)).getDate()}  ${new Date(String(tip.date)).getFullYear()}` :
+                                    `${new Date(String(data[data.length - 1]?.Date)).toLocaleString('default', { month: 'short' })} ${new Date(String(data[data.length - 1]?.Date)).getDate()}  ${new Date(String(data[data.length - 1]?.Date)).getFullYear()}`
                             }
                         </Heading>
                     </Box>
@@ -162,7 +163,7 @@ const Home = () => {
                         <Heading
                             style={{ ...HeadingStyle, justifyContent: "flex-end", fontSize: "2.5rem", height: "50px" }}
                         >
-                            $ {tip.close?.toFixed(2)}
+                            $ {tip.close ? tip.close?.toFixed(2) : data[data.length - 1]?.Close?.toFixed(2)}
                         </Heading>
                     </Box>
                     <Box
@@ -178,7 +179,7 @@ const Home = () => {
                         <Heading
                             style={{ ...HeadingStyle, justifyContent: "flex-end", fontSize: "2.5rem", height: "50px" }}
                         >
-                            $  {tip.open?.toFixed(2)}
+                            $  {tip.open ? tip.open.toFixed(2) : data[data.length - 1]?.Open.toFixed(2)}
                         </Heading>
                     </Box>
                     <Box
@@ -194,7 +195,7 @@ const Home = () => {
                         <Heading
                             style={{ ...HeadingStyle, justifyContent: "flex-end", fontSize: "2.5rem", height: "50px" }}
                         >
-                            $  {tip.high?.toFixed(2)}
+                            $  {tip.high ? tip.high.toFixed(2) : data[data.length - 1]?.High?.toFixed(2)}
                         </Heading>
                     </Box>
                     <Box
@@ -211,7 +212,7 @@ const Home = () => {
                         <Heading
                             style={{ ...HeadingStyle, justifyContent: "flex-end", fontSize: "2.5rem", height: "50px" }}
                         >
-                            $   {tip.low?.toFixed(2)}
+                            $   {tip.low ? tip.low.toFixed(2) : data[data.length - 1]?.Low?.toFixed(2)}
                         </Heading>
                     </Box>
                     <Box
@@ -227,7 +228,7 @@ const Home = () => {
                         <Heading
                             style={{ ...HeadingStyle, justifyContent: "flex-end", fontSize: "2.5rem", height: "50px" }}
                         >
-                            {tip.volume?.toFixed(2)}
+                            {tip.volume ? tip.volume.toFixed(2) : data[data.length - 1]?.Volume.toFixed(2)}
                         </Heading>
                     </Box>
                 </Box>
