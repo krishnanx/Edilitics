@@ -11,7 +11,7 @@ const Card = () => {
     interface RootState {
         data: dataState;
     }
-    const { data, status } = useSelector(
+    const { data } = useSelector(
         (state: RootState) => state.data
     ) as dataState;
 

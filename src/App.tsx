@@ -4,7 +4,7 @@ import { Box } from '@chakra-ui/react'
 import Home from './pages/Home'
 import { Provider } from "react-redux";
 import store from './store/store';
-import { createBrowserRouter, createRoutesFromElements, Route, RouterProvider, Routes } from 'react-router-dom'
+import { createBrowserRouter, createRoutesFromElements, Route, RouterProvider } from 'react-router-dom'
 import Layout from './pages/Layout';
 import FullScreen from './pages/FullScreen';
 function App() {

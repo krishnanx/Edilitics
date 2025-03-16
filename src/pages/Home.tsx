@@ -1,10 +1,10 @@
 
 import LineGraph from '../components/LineGraph'
 "use client"
-import { Box, Portal, Select, createListCollection, Text, Button } from '@chakra-ui/react'
+import { Box, createListCollection, Text, Button } from '@chakra-ui/react'
 import Card from '../components/Card';
 import { AppDispatch } from "../store/store";
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { addCompany } from '../store/CompanySlice'
 import { getData } from '../store/DataSlice'
 import { useNavigate } from 'react-router-dom';
@@ -26,13 +26,13 @@ const Home = () => {
         }
     };
 
-    interface CompanyState {
-        data: string[]; // or whatever type `data` holds
-    }
+    // interface CompanyState {
+    //     data: string[]; // or whatever type `data` holds
+    // }
 
-    interface RootState {
-        company: CompanyState;
-    }
+    // interface RootState {
+    //     company: CompanyState;
+    // }
     // interface dataState {
     //     data: []; // or whatever type `data` holds
     //     status: string
@@ -44,7 +44,7 @@ const Home = () => {
     // const { data, status } = useSelector(
     //     (state: State) => state.data
     // ) as dataState;
-    const { data: value } = useSelector((state: RootState) => state.company);
+    // const { data: value } = useSelector((state: RootState) => state.company);
     // type SelectChangeEvent = {
     //     value: string;
     //     label: string;

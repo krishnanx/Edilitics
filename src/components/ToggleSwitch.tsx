@@ -1,10 +1,28 @@
 import styled from 'styled-components';
-
+import { addTheme } from '../store/ThemeSlice';
+import { useDispatch, useSelector } from 'react-redux';
 const Switch = () => {
+    const dispatch = useDispatch()
+
+    interface modeState {
+        mode: string; // or whatever type `data` holds
+
+    }
+
+    interface RootState {
+        mode: modeState;
+    }
+    const { mode } = useSelector(
+        (state: RootState) => state.mode || { mode: "light" }
+    ) as modeState;
+    const handleClick = () => {
+        const theme = mode === "dark" ? "light" : "dark"
+        dispatch(addTheme(theme))
+    }
     return (
         <StyledWrapper>
             <label className="switch">
-                <input type="checkbox" />
+                <input type="checkbox" onClick={() => { handleClick() }} />
                 <span className="slider" />
             </label>
         </StyledWrapper>
