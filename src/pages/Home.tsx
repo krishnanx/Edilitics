@@ -7,10 +7,12 @@ import { AppDispatch } from "../store/store";
 import { useDispatch, useSelector } from 'react-redux'
 import { addCompany } from '../store/CompanySlice'
 import { getData } from '../store/DataSlice'
+import { useNavigate } from 'react-router-dom';
 
 import { useRef } from 'react';
 //import { addCompany } from '../store/CompanySlice'
 const Home = () => {
+    const navigate = useNavigate();
     const dispatch = useDispatch<AppDispatch>();
     const scrollRef = useRef<HTMLDivElement | null>(null);
     const scroll = (direction: "left" | "right") => {
@@ -166,11 +168,9 @@ const Home = () => {
                         <Card />
                     </Box>
                     <Button
-
-
-
                         w="50px"
                         h="50px"
+                        onClick={() => { navigate("/chartFull") }}
                     >
                         <span className="material-symbols-outlined" style={{
                             fontSize: "34px",

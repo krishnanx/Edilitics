@@ -4,8 +4,19 @@ import { Box } from '@chakra-ui/react'
 import Home from './pages/Home'
 import { Provider } from "react-redux";
 import store from './store/store';
+import { createBrowserRouter, createRoutesFromElements, Route, RouterProvider, Routes } from 'react-router-dom'
+import Layout from './pages/Layout';
+import FullScreen from './pages/FullScreen';
 function App() {
 
+
+  const router = createBrowserRouter(createRoutesFromElements(
+    <Route path="/" element={<Layout />}>
+      <Route index element={<Home />}></Route>
+      <Route path="/chartFull" element={<FullScreen />}></Route>
+
+    </Route>
+  ))
   return (
     <>
       <Box
@@ -13,11 +24,11 @@ function App() {
         h="100vh"
         bgColor="white"
         display="flex"
-        justifyContent="center"
-        alignItems="center"
+
+        flexDirection="column"
       >
         <Provider store={store}>
-          <Home />
+          <RouterProvider router={router} />
         </Provider>
 
       </Box>
