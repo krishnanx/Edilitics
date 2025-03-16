@@ -102,9 +102,12 @@ const Home = () => {
     //     return <Loader />
     // }
     const HeadingStyle = {
+        fontFamily: "Roboto",
         color: mode === "dark" ? "white" : "black",
-        display: "flex", alignItems: "center"
-    }
+        display: "flex",
+        alignItems: "center",
+    };
+
     const [isHovered, setIsHovered] = useState(false);
     const [Hovered, setHovered] = useState("");
     return (
@@ -158,6 +161,7 @@ const Home = () => {
                     >
                         <Heading
                             style={{ ...HeadingStyle, fontSize: "2.5rem", height: "50px", }}
+
                         >
                             Close:
                         </Heading>
