@@ -123,12 +123,23 @@ const LineChart: React.FC = () => {
         svg.selectAll(".domain")
             .style("stroke", "black")
             .style("stroke-width", "1px");
-        svg.append("path")
+        const path = svg.append("path")
             .datum(aapl)
             .attr("fill", "none")
             .attr("stroke", "steelblue")
             .attr("stroke-width", 1.5)
             .attr("d", line);
+        // Get total length for stroke animation
+        const totalLength = path.node()?.getTotalLength() ?? 0;
+
+        // Initial stroke animation from start to end
+        path
+            .attr("stroke-dasharray", `${totalLength} ${totalLength}`)
+            .attr("stroke-dashoffset", totalLength)
+            .transition()
+            .duration(750)
+            .ease(d3.easeLinear)
+            .attr("stroke-dashoffset", 0);
 
     }, [data]);
 

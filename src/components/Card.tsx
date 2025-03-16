@@ -1,11 +1,65 @@
-import { Box } from '@chakra-ui/react';
+import { Box, Text } from '@chakra-ui/react';
 
 import styled from 'styled-components';
-
+import { useSelector } from 'react-redux';
 const Card = () => {
+    interface dataState {
+        data: Array<any>; // or whatever type `data` holds
+        status: string
+    }
+
+    interface RootState {
+        data: dataState;
+    }
+    const { data, status } = useSelector(
+        (state: RootState) => state.data
+    ) as dataState;
+
+
     return (
         <StyledWrapper>
-            <Box className="card shadow">
+            <Box className="card shadow"
+                display="flex"
+                flexDirection="column"
+                alignItems="center"
+                pt="20px"
+            >
+                <Text
+                    color='black'
+                    mb="20px"
+                    textAlign="center"
+                    w="200px"
+                    fontSize="1.3rem"
+
+                >
+                    Open:{(data[data.length - 1]?.Open)?.toFixed(2) || ""}
+                </Text>
+                <Text
+                    color='black'
+                    mb="20px"
+                    textAlign="center"
+                    w="200px"
+                    fontSize="1.3rem"
+                >
+                    Close:{(data[data.length - 1]?.Close)?.toFixed(2) || ""}
+                </Text>
+                <Text
+                    color='black'
+                    mb="20px"
+                    textAlign="center"
+                    w="200px"
+                    fontSize="1.3rem"
+                >
+                    High:{(data[data.length - 1]?.High)?.toFixed(2) || ""}
+                </Text>
+                <Text
+                    color='black'
+                    textAlign="center"
+                    w="200px"
+                    fontSize="1.3rem"
+                >
+                    Low:{(data[data.length - 1]?.Low)?.toFixed(2) || ""}
+                </Text>
             </Box>
         </StyledWrapper>
     );
@@ -13,8 +67,8 @@ const Card = () => {
 
 const StyledWrapper = styled.div`
   .card {
-   width: 190px;
-   height: 254px;
+   width: 320px;
+   height: 360px;
    background: white;
    border-radius: 10px;
    transition: border-radius 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);

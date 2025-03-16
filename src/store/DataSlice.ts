@@ -43,7 +43,7 @@ type getData = {
 }
 export const getData = createAsyncThunk("company/getCompany", async ({ company }: getData) => {
     console.log("hi")
-    console.log(company[0])
+    console.log(company)
     // console.log(email, password)
     // try {
     //     const response = await SignUpNewUser(email, password);
@@ -55,7 +55,7 @@ export const getData = createAsyncThunk("company/getCompany", async ({ company }
         const { data: value } = await supabase
             .from('Data')
             .select('*')
-            .eq("company", company[0])
+            .eq("company", company)
         console.log(value)
         return value;
     }

@@ -1,17 +1,28 @@
 
 import LineGraph from '../components/LineGraph'
 "use client"
-import { Box, Portal, Select, createListCollection } from '@chakra-ui/react'
-
+import { Box, Portal, Select, createListCollection, Text, Button } from '@chakra-ui/react'
+import Card from '../components/Card';
 import { AppDispatch } from "../store/store";
 import { useDispatch, useSelector } from 'react-redux'
 import { addCompany } from '../store/CompanySlice'
 import { getData } from '../store/DataSlice'
 
+import { useRef } from 'react';
 //import { addCompany } from '../store/CompanySlice'
 const Home = () => {
     const dispatch = useDispatch<AppDispatch>();
-
+    const scrollRef = useRef<HTMLDivElement | null>(null);
+    const scroll = (direction: "left" | "right") => {
+        const { current } = scrollRef;
+        if (current) {
+            const scrollAmount = 400;
+            current.scrollBy({
+                left: direction === "left" ? -scrollAmount : scrollAmount,
+                behavior: "smooth",
+            });
+        }
+    };
 
     interface CompanyState {
         data: string[]; // or whatever type `data` holds
@@ -50,49 +61,130 @@ const Home = () => {
             justifyContent="center"
             alignItems="center"
             w="90%"
-            h="500px"
+            h="900px"
+            flexDirection="column"
         >
-            <Box
+            <Box position="relative" width="1250px" maxW="4000px" mx="auto" h="100px" justifyContent="center" alignItems="center">
+                {/* Left Scroll Button */}
+                <Button
+                    aria-label="Scroll Left"
+                    position="absolute"
+                    left="-30px"
+                    top="45%"
+                    transform="translateY(-50%)"
+                    zIndex={10}
+                    onClick={() => scroll("left")}
+                    bg="gray.200"
+                    _hover={{ bg: "gray.300" }}
+                    rounded="full"
 
-            >
-                <LineGraph />
+                >
+
+                </Button>
+                {/* Scrollable Content */}
+                <Box
+                    display="flex"
+                    justifyContent="center"
+                    alignItems="center"
+                    p="0"
+                    h="90px"
+                    ref={scrollRef}
+                    gap={7}
+                    overflowX="auto"
+                    scrollBehavior="smooth"
+                    whiteSpace="nowrap"
+                    minWidth="100%" // Ensure it stretches enough
+                    css={{
+                        "&::-webkit-scrollbar": { display: "none" },
+                        "-ms-overflow-style": "none",
+                        "scrollbar-width": "none",
+                    }}
+                    bgColor='white'
+                >
+                    {items.map((item, index) => (
+                        <Button
+                            key={item.value}
+                            minW="150px"
+                            p={4}
+
+                            rounded="xl"
+                            onClick={() => handlePush(item)}
+                            textAlign="center"
+                            h="80px"
+                            _hover={{ bgColor: "#F2F2F2" }}
+                        >
+                            <Text fontSize="lg" fontWeight="bold">
+                                {item.label}
+                            </Text>
+                            <Text color="green.500" fontWeight="semibold">
+                                {item.value}
+                            </Text>
+                        </Button>
+                    ))}
+                </Box>
+
+                {/* Right Scroll Button */}
+                <Button
+                    aria-label="Scroll Right"
+                    position="absolute"
+                    right="-40px"
+                    top="45%"
+                    transform="translateY(-50%)"
+                    zIndex={10}
+                    onClick={() => scroll("right")}
+                    bg="gray.200"
+                    _hover={{ bg: "gray.300" }}
+                    rounded="full"
+                >
+
+                </Button>
             </Box>
             <Box
                 display="flex"
-                flexDirection="column"
-                h="500px"
+                flexDirection="row"
+                justifyContent="center"
+                alignItems="center"
 
             >
-                <Select.Root collection={frameworks} size="sm" width="320px"
-                    value={value}
-                    onValueChange={(e) => handlePush(e)}
+                <Box
+
                 >
-                    <Select.HiddenSelect />
-                    <Select.Label color="black">Select framework</Select.Label>
-                    <Select.Control>
-                        <Select.Trigger>
-                            <Select.ValueText placeholder="" color="black" />
-                        </Select.Trigger>
-                        <Select.IndicatorGroup>
-                            <Select.Indicator />
-                        </Select.IndicatorGroup>
-                    </Select.Control>
-                    <Portal>
-                        <Select.Positioner>
-                            <Select.Content>
-                                {frameworks.items.map((framework) => (
-                                    <Select.Item item={framework} key={framework.value}>
-                                        {framework.label}
-                                        <Select.ItemIndicator />
-                                    </Select.Item>
-                                ))}
-                            </Select.Content>
-                        </Select.Positioner>
-                    </Portal>
-                </Select.Root>
+                    <LineGraph />
+                </Box>
+                <Box
+                    display="flex"
+                    flexDirection="column"
+                    h="500px"
+
+                >
+
+                    <Box
+                        display="flex"
+                        mt="50px"
+                        mb="30px"
+                    >
+                        <Card />
+                    </Box>
+                    <Button
+
+
+
+                        w="50px"
+                        h="50px"
+                    >
+                        <span className="material-symbols-outlined" style={{
+                            fontSize: "34px",
+                            border: "2px solid rgba(0, 0, 0, 0.1)", // Black border with 50% opacity
+                            padding: "3px",
+                            borderRadius: "5px"
+                        }}>
+                            fullscreen
+                        </span>
+                    </Button>
+                </Box>
             </Box>
 
-        </Box>
+        </Box >
     )
 }
 
@@ -105,3 +197,11 @@ const frameworks = createListCollection({
         { label: "JPMorgan Chase ", value: "AMJ" },
     ],
 })
+const items =
+    [
+        { label: "Agilent Technologies", value: "A" },
+        { label: "Apple Inc", value: "AAPL" },
+        { label: "Adobe Inc", value: "ADBE" },
+        { label: "JPMorgan Chase ", value: "AMJ" },
+
+    ]
