@@ -4,6 +4,7 @@ This project is a "data visuaisation website" which uses the core d3 package (d3
 
 The data is retrieved from Supabase according to the company selected by the user. Supabase was used as a medium to store data as live data retrieval using api required money or had fewer api calls for free.
 
+Future implementation: Websocket for live updates from supbase(or any other api)
 
 ## Features Implemented
 
