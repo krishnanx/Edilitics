@@ -334,7 +334,7 @@ const Home = () => {
                             aria-label="Scroll Left"
                             position="absolute"
                             left="15px"
-                            top={{ base: "60%", lg: "45%" }}
+                            top={{ base: "67%", lg: "45%" }}
                             transform="translateY(-50%)"
                             zIndex={10}
                             onClick={() => scroll("left")}
@@ -410,7 +410,7 @@ const Home = () => {
                             aria-label="Scroll Right"
                             position="absolute"
                             right={{ base: "10px", lg: "30px" }}
-                            top={{ base: "60%", lg: "45%" }}
+                            top={{ base: "67%", lg: "45%" }}
                             transform="translateY(-50%)"
                             zIndex={10}
                             onClick={() => scroll("right")}
