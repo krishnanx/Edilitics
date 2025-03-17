@@ -31,6 +31,9 @@ The data is retrieved from Supabase according to the company selected by the use
   --Chakra ui / CSS / Styled Components for Styling
   --TypeScript
   --Supabase
+## Live Deployment
+  --The project is deployed using Vercel
+  --[Link Text](https://edilitics-uoao.vercel.app/)
 
 
 
