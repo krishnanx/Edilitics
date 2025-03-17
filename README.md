@@ -1,15 +1,13 @@
 # Edilitics Task ~ StockWave
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This project is a "data visuaisation website" which uses the core d3 package (d3) to display stock market data
 
-Currently, two official plugins are available:
+The data is retrieved from Supabase according to the company selected by the user. Supabase was used as a medium to store data as live data retrieval using api required money or had fewer api calls for free.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
 
-## Expanding the ESLint configuration
+## Features Implemented
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+
 
 ```js
 export default tseslint.config({

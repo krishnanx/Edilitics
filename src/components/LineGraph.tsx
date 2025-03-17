@@ -62,10 +62,7 @@ const LineChart: React.FC = () => {
     const { data, status } = useSelector(
         (state: RootState) => state.data
     ) as dataState;
-    interface revised {
-        point: DataPoint[]
-        raw: any[]
-    }
+
     useEffect(() => { dispatch(getData({ company: "A" })); }, [])
     useEffect(() => {
 
@@ -209,7 +206,7 @@ const LineChart: React.FC = () => {
             .on("mouseout", () => {
                 tooltip.transition().duration(200).style("opacity", 0);
             })
-            .on("click", (event, d) => {
+            .on("click", (d) => {
 
                 const dateString = d.date.toLocaleDateString('en-US');
                 console.log(dateString)
