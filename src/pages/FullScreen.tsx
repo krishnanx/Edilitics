@@ -3,6 +3,7 @@ import CandlestickBarChart from "../components/CandleStick"
 import { useSelector } from "react-redux";
 import { Button } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
+import Tooltip from "../components/ToolTip";
 // import { FullscreenExit } from "@mui/icons-material";
 
 const Full = () => {
@@ -26,19 +27,39 @@ const Full = () => {
             justifyContent="center"
             alignItems="center"
             bgColor={mode == "dark" ? "rgba(12, 12, 12,0.9)" : "white"}
-            pt="50px"
+
             flexDirection="row"
             pl="50px"
         >
             <Box
                 display="flex"
-                flexDirection="row"
+                flexDirection="column"
                 justifyContent="center"
                 alignItems="center"
-                w="90%"
-                h="50vh"
+                w={{ base: "", lg: "100%" }}
+                h="90vh"
             >
-                <CandlestickBarChart />
+                <Box
+                    w={{ lg: "100px" }}
+                    h={{ lg: "60px" }}
+                    display="flex"
+                    justifyContent="center"
+                    alignItems="center"
+                >
+                    <Tooltip />
+                </Box>
+                <Box
+                    display="flex"
+                    flexDirection="column"
+                    alignItems="flex-end"
+                    justifyContent="flex-end"
+
+                    w={{ lg: "85vw" }}
+                    h={{ lg: "70vh" }}
+                >
+                    <CandlestickBarChart />
+                </Box>
+
             </Box>
             <Box
                 display="flex"

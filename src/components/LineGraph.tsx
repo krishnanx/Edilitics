@@ -126,7 +126,7 @@ const LineChart: React.FC = () => {
 
         svg.append("g")
             .attr("transform", `translate(0,${height - marginBottom})`)
-            .call(d3.axisBottom(x).ticks(width / 80).tickSizeOuter(0))
+            .call(d3.axisBottom(x).ticks(width / 100).tickSizeOuter(0))
             .selectAll("text")
             .style("fill", mode === "dark" ? "white" : "black")
             .style("font-size", "12px");

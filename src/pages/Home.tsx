@@ -430,15 +430,16 @@ const Home = () => {
                         w={{ base: "90vw", lg: "60vw" }}
                         h={{ base: "700px", lg: "700px" }}
                         mt="20px"
-                        pl="15px"
+                        pl={{ base: "0px", lg: "15px" }}
                         justifyContent={{ base: "flex-end", lg: "center" }}
                         alignItems="center"
                         flexDirection={{ base: "column-reverse", lg: "row" }}
+                        pt={{ base: "20px", lg: "0px" }}
 
                     >
                         <LineGraph />
                         <Box
-                            display="flex"
+                            display={{ base: "none", lg: "flex" }}
                             w={{ base: "60px", lg: "70px" }}
                             h={{ base: "50px", lg: "700px" }}
                             mb={{ base: "30px", lg: "none" }}
