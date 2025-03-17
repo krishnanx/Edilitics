@@ -15,7 +15,7 @@ import { useNavigate } from 'react-router-dom';
 
 import { useRef, useState } from 'react';
 import Loader from '../components/Loader';
-//import { addCompany } from '../store/CompanySlice'
+
 const Home = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch<AppDispatch>();
@@ -34,15 +34,9 @@ const Home = () => {
     };
 
 
-    // interface CompanyState {
-    //     data: string[]; // or whatever type `data` holds
-    // }
 
-    // interface RootState {
-    //     company: CompanyState;
-    // }
     interface DataPoint {
-        Date: string;  // match your backend data
+        Date: string;
         Open: number;
         High: number;
         Low: number;
@@ -52,7 +46,7 @@ const Home = () => {
         company: string;
     }
     interface dataState {
-        data: DataPoint[]; // or whatever type `data` holds
+        data: DataPoint[];
         status: string
     }
 
@@ -75,13 +69,13 @@ const Home = () => {
         tip: TipData;
     }
 
-    // Define the whole Redux store's root state
+
     interface RootState {
         tip: TipState;
     }
     const { tip } = useSelector((state: RootState) => state.tip);
     interface modeState {
-        mode: string; // or whatever type `data` holds
+        mode: string;
 
     }
 
@@ -91,11 +85,7 @@ const Home = () => {
     const { mode } = useSelector(
         (state: RootState) => state.mode || { mode: "light" }
     ) as modeState;
-    // const { data: value } = useSelector((state: RootState) => state.company);
-    // type SelectChangeEvent = {
-    //     value: string;
-    //     label: string;
-    // };
+
 
     const handlePush = async (e: any) => {
         setSelect(e.value)
@@ -103,9 +93,7 @@ const Home = () => {
         dispatch(addCompany(e.value));
         dispatch(getData({ company: e.value }));
     };
-    // if (status == 'loading') {
-    //     return <Loader />
-    // }
+
     const HeadingStyle = {
         fontFamily: '"Roboto", sans-serif',
         color: mode === "dark" ? "white" : "black",
@@ -170,7 +158,7 @@ const Home = () => {
                                     fontSize={{ base: "1.5rem", lg: "2rem" }}
                                 >
                                     {
-                                        // Ensure tip.date is a valid string and format it to show month, day, and year
+                                        // To Ensure tip.date is a valid string and format it to show month, day, and year
                                         tip.date ? `${new Date(String(tip.date)).toLocaleString('default', { month: 'short' })} ${new Date(String(tip.date)).getDate()}  ${new Date(String(tip.date)).getFullYear()}` :
                                             `${new Date(String(data[data.length - 1]?.Date)).toLocaleString('default', { month: 'short' })} ${new Date(String(data[data.length - 1]?.Date)).getDate()}  ${new Date(String(data[data.length - 1]?.Date)).getFullYear()}`
                                     }
@@ -344,7 +332,7 @@ const Home = () => {
                             rounded="full"
                             w={{ base: "45px", lg: "50px" }}
                         >
-                            {/* <ArrowBackIos /> */}
+
                             <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="black">
                                 <path d="M400-80 0-480l400-400 71 71-329 329 329 329-71 71Z" />
                             </svg>
@@ -355,20 +343,20 @@ const Home = () => {
                             display="flex"
                             justifyContent="flex-start"
                             alignItems="center"
-                            // pl="160px"
+
                             h={{ base: "80px", lg: "100px" }}
                             ref={scrollRef}
                             gap={{ base: 2, lg: 10 }}
-                            overflowX="auto" // Ensure scroll works
+                            overflowX="auto"
                             scrollBehavior="smooth"
                             whiteSpace="nowrap"
                             width={'auto'}
 
                             css={{
-                                "&::-webkit-scrollbar": { display: "none" }, // Hide scrollbar
+                                "&::-webkit-scrollbar": { display: "none" },
                                 "-ms-overflow-style": "none",
                                 "scrollbar-width": "none",
-                                scrollSnapType: "x mandatory", // Snap support
+                                scrollSnapType: "x mandatory",
                             }}
                             pl="20px"
                         >
@@ -392,7 +380,7 @@ const Home = () => {
                                     _active={{ bgColor: "#F2F2F2" }}
                                 >
                                     <Text fontSize={{ base: "13px", lg: "16px" }} fontWeight="bold" color={select === item.value ? "black" : Hovered === item.value ? "black" : mode === "dark" ? "white" : "black"}
-                                        // Change color when the parent (group) is hovered
+
                                         as="span"
                                         mr="4px"
                                     >
@@ -419,7 +407,7 @@ const Home = () => {
                             rounded="full"
                             w={{ base: "45px", lg: "50px" }}
                         >
-                            {/* <ArrowForwardIos /> */}
+
                             <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="black">
                                 <path d="m321-80-71-71 329-329-329-329 71-71 400 400L321-80Z" />
                             </svg>
@@ -457,7 +445,7 @@ const Home = () => {
                                 bgColor={mode == "dark" ? "rgba(12, 12, 12,0.9)" : "white"}
                                 _hover={{ bgColor: "transparent" }}
                             >
-                                {/* <Fullscreen sx={{ fontSize: "40px", color: mode !== "dark" ? "rgba(12, 12, 12,0.9)" : "white" }} /> */}
+
                                 <svg xmlns="http://www.w3.org/2000/svg" height="35px" viewBox="0 -960 960 960" width="50px" fill={mode === "dark" ? "white" : "black"}>
                                     <path d="M120-120v-200h80v120h120v80H120Zm520 0v-80h120v-120h80v200H640ZM120-640v-200h200v80H200v120h-80Zm640 0v-120H640v-80h200v200h-80Z" />
                                 </svg>

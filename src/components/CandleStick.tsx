@@ -76,19 +76,19 @@ const CandlestickBarChart: React.FC = () => {
             .domain([0, d3.max(stockData, (d) => d.volume) as number])
             .range([height - margin.bottom, height - barHeight]);
 
-        // ✅ Create the x and y axes ONCE
+        //Create the x and y axes ONCE
         const xAxis = g.append("g")
             .attr("transform", `translate(0,${height - margin.bottom})`);
 
         const yAxis = g.append("g")
             .attr("transform", `translate(${margin.left},0)`);
 
-        // ✅ Function to update the axes
+        //Function to update the axes
         const updateAxes = () => {
             xAxis.call(d3.axisBottom(x).ticks(width / 80).tickSizeOuter(0));
             yAxis.call(d3.axisLeft(y).ticks(height / 40));
 
-            // ✅ Style axis lines AFTER creation
+            //Style axis lines AFTER creation
             xAxis.select(".domain").attr("stroke", mode === "dark" ? "white" : "black");
             yAxis.select(".domain").attr("stroke", mode === "dark" ? "white" : "black");
 
@@ -165,11 +165,11 @@ const CandlestickBarChart: React.FC = () => {
                 .style("font-size", "12px");
         };
 
-        // ✅ Initial draw
+        //Initial draw
         updateAxes();
         drawChart();
 
-        // ✅ On zoom, update the domain and redraw
+        //On zoom, update the domain and redraw
         svg.on("wheel", (event) => {
             event.preventDefault();
 
@@ -198,8 +198,8 @@ const CandlestickBarChart: React.FC = () => {
                 y.domain([yMin - padding, yMax + padding]);
             }
 
-            updateAxes(); // ✅ Update axes without clearing them
-            drawChart();  // ✅ Redraw chart without deleting axes
+            updateAxes(); //Update axes without clearing them
+            drawChart();  //Redraw chart without deleting axes
         });
 
     }, [data, mode]);

@@ -14,34 +14,13 @@ interface DataPoint {
     low: number;
     volume: number;
 }
-// const aapl: DataPoint[] = [
-//     { date: new Date("2007-04-23"), close: 93.24 },
-//     { date: new Date("2007-04-24"), close: 95.35 },
-//     { date: new Date("2007-04-25"), close: 98.84 },
-//     { date: new Date("2007-04-26"), close: 99.92 },
-//     { date: new Date("2007-04-29"), close: 99.8 },
-//     { date: new Date("2007-05-01"), close: 99.47 },
-//     { date: new Date("2007-05-02"), close: 100.39 },
-//     { date: new Date("2007-05-03"), close: 100.4 },
-//     { date: new Date("2007-05-04"), close: 100.81 },
-//     { date: new Date("2007-05-07"), close: 103.92 },
-//     { date: new Date("2007-05-08"), close: 105.06 },
-//     { date: new Date("2007-05-09"), close: 106.88 },
-//     { date: new Date("2007-05-09"), close: 107.34 },
-//     { date: new Date("2007-05-10"), close: 108.74 },
-//     { date: new Date("2007-05-13"), close: 109.36 },
-//     { date: new Date("2007-05-14"), close: 107.52 },
-//     { date: new Date("2007-05-15"), close: 107.34 },
-//     { date: new Date("2007-05-16"), close: 109.44 },
-//     { date: new Date("2007-05-17"), close: 110.02 },
-//     { date: new Date("2007-05-20"), close: 111.98 },
-// ];
+
 
 const LineChart: React.FC = () => {
     const chartRef = useRef<SVGSVGElement>(null);
     const dispatch = useDispatch<AppDispatch>();
     interface modeState {
-        mode: string; // or whatever type `data` holds
+        mode: string;
 
     }
 
@@ -52,7 +31,7 @@ const LineChart: React.FC = () => {
         (state: RootState) => state.mode || { mode: "dark" }
     ) as modeState;
     interface dataState {
-        data: []; // or whatever type `data` holds
+        data: [];
         status: string
     }
 
@@ -80,8 +59,7 @@ const LineChart: React.FC = () => {
         // Convert the data
         const aapl: DataPoint[] = convertToDataPoints(data);
 
-        // const aapl = fullData.filter(({ date, close }) => date && close !== undefined)
-        //     .map(({ date, close }) => ({ date, close }));
+
         if (!aapl || !chartRef.current) return;
         console.log("aapl:", aapl)
         const width = 1200;
@@ -90,6 +68,7 @@ const LineChart: React.FC = () => {
         const marginRight = 30;
         const marginBottom = 30;
         const marginLeft = 40;
+
         //Remove old svg
         d3.select(chartRef.current).selectAll("*").remove();
 
@@ -153,6 +132,7 @@ const LineChart: React.FC = () => {
             .attr("stroke", mode === "dark" ? "#6A9BC3" : "steelblue")
             .attr("stroke-width", 1.5)
             .attr("d", line);
+
         // Get total length for stroke animation
         const totalLength = path.node()?.getTotalLength() ?? 0;
 
@@ -175,9 +155,9 @@ const LineChart: React.FC = () => {
             .style("box-shadow", "0 0 5px rgba(0,0,0,0.3)")
             .style("pointer-events", "none")
             .style("opacity", 0)
-            .style("color", "black") // Ensure text is black
+            .style("color", "black")
             .style("font-size", "12px")
-            .style("z-index", "10"); // Ensure tooltip stays on top
+            .style("z-index", "10");
 
 
 
