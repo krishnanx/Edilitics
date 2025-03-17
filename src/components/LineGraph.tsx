@@ -129,7 +129,7 @@ const LineChart: React.FC = () => {
             .call(d3.axisBottom(x).ticks(width / 100).tickSizeOuter(0))
             .selectAll("text")
             .style("fill", mode === "dark" ? "white" : "black")
-            .style("font-size", "12px");
+            .style("font-size", "20px");
 
         svg.append("g")
             .attr("transform", `translate(${marginLeft},0)`)
@@ -140,13 +140,13 @@ const LineChart: React.FC = () => {
                 .attr("stroke-opacity", 0.1))
             .call((g) => g.append("text")
                 .attr("x", -marginLeft)
-                .attr("y", 10)
+                .attr("y", 10 + 5)
                 .attr("fill", "black")
                 .attr("text-anchor", "start")
                 .text("↑ Daily close ($)"))
             .selectAll("text")
             .style("fill", mode === "dark" ? "white" : "black")
-            .style("font-size", "12px");
+            .style("font-size", "20px");
         svg.selectAll(".domain")
             .style("stroke", mode === "dark" ? "white" : "black")
             .style("stroke-width", "1px");

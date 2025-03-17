@@ -428,7 +428,7 @@ const Home = () => {
                     <Box
                         display="flex"
                         w={{ base: "90vw", lg: "60vw" }}
-                        h={{ base: "700px", lg: "700px" }}
+                        h={{ base: "700px", lg: "70 0px" }}
                         mt="20px"
                         pl={{ base: "0px", lg: "15px" }}
                         justifyContent={{ base: "flex-end", lg: "center" }}
