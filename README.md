@@ -37,7 +37,7 @@ The data is retrieved from Supabase according to the company selected by the use
 
 ## Live Deployment
   - The project is deployed using Vercel
-  - [Link Text](https://edilitics-uoao.vercel.app/)
+  - [https://edilitics-uoao.vercel.app/](https://edilitics-uoao.vercel.app/)
 
 
 
