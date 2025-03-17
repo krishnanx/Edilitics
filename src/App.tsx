@@ -21,12 +21,13 @@ function App() {
   return (
     <>
       <Box
-        w="99.2vw"
-        h="100vh"
-
+        w={{ base: "99.3", lg: "99.2vw" }}
+        h={{ base: "230vh", lg: "100vh" }}
         display="flex"
-
         flexDirection="column"
+        justifyContent={{ base: "flex-start", lg: "center" }}
+        alignItems="center"
+
       >
         <Provider store={store}>
           <RouterProvider router={router} />

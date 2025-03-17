@@ -76,37 +76,54 @@ const CandlestickBarChart: React.FC = () => {
             .domain([0, d3.max(stockData, (d) => d.volume) as number])
             .range([height - margin.bottom, height - barHeight]);
 
-        // x and y axes
+        // ✅ Create the x and y axes ONCE
         const xAxis = g.append("g")
-            .attr("transform", `translate(0,${height - margin.bottom})`)
-            .call(d3.axisBottom(x).ticks(width / 80).tickSizeOuter(0));
-
-        xAxis.selectAll("text")
-            .style("fill", mode === "dark" ? "white" : "black")
-            .style("font-size", "12px");
+            .attr("transform", `translate(0,${height - margin.bottom})`);
 
         const yAxis = g.append("g")
-            .attr("transform", `translate(${margin.left},0)`)
-            .call(d3.axisLeft(y).ticks(height / 40));
+            .attr("transform", `translate(${margin.left},0)`);
 
-        yAxis.selectAll("text")
-            .style("fill", mode === "dark" ? "white" : "black")
-            .style("font-size", "12px");
+        // ✅ Function to update the axes
+        const updateAxes = () => {
+            xAxis.call(d3.axisBottom(x).ticks(width / 80).tickSizeOuter(0));
+            yAxis.call(d3.axisLeft(y).ticks(height / 40));
 
-        // Draw chart based on x-scale domain
-        // Inside drawChart function:
+            // ✅ Style axis lines AFTER creation
+            xAxis.select(".domain").attr("stroke", mode === "dark" ? "white" : "black");
+            yAxis.select(".domain").attr("stroke", mode === "dark" ? "white" : "black");
+
+            xAxis.selectAll("text")
+                .style("fill", mode === "dark" ? "white" : "black")
+                .style("font-size", "12px");
+
+            yAxis.selectAll("text")
+                .style("fill", mode === "dark" ? "white" : "black")
+                .style("font-size", "12px");
+        };
+
         const drawChart = () => {
-            // Clear existing chart
+            // Clear only candles and volume bars — NOT axes
             g.selectAll(".candle").remove();
             g.selectAll(".volume").remove();
+            g.selectAll(".data-label").remove();
 
-            // Filter data within the current x-domain
             const visibleData = stockData.filter(d =>
                 d.date >= x.domain()[0] && d.date <= x.domain()[1]
             );
 
-            // Dynamically calculate bar width based on visible data count
             const barWidth = Math.max(5, (width - margin.left - margin.right) / visibleData.length * 0.65);
+
+            // Draw volume bars
+            g.append("g")
+                .selectAll("rect")
+                .data(visibleData)
+                .join("rect")
+                .attr("class", "volume")
+                .attr("x", (d) => x(d.date) - barWidth / 2)
+                .attr("y", (d) => yVolume(d.volume))
+                .attr("width", barWidth)
+                .attr("height", (d) => yVolume(0) - yVolume(d.volume))
+                .attr("fill", (d) => (d.close >= d.open ? "#4caf50" : "#f44336"));
 
             // Candle group
             const candle = g.append("g")
@@ -130,27 +147,35 @@ const CandlestickBarChart: React.FC = () => {
                 .attr("x", -barWidth / 2)
                 .attr("fill", (d) => (d.open > d.close ? "#e63946" : "#2a9d8f"));
 
-            // Volume bars
-            g.append("g")
-                .selectAll("rect")
-                .data(visibleData)
-                .join("rect")
-                .attr("class", "volume")
-                .attr("x", (d) => x(d.date) - barWidth / 2)
-                .attr("y", (d) => yVolume(d.volume))
-                .attr("width", barWidth)
-                .attr("height", (d) => yVolume(0) - yVolume(d.volume))
-                .attr("fill", (d) => (d.close >= d.open ? "#4caf50" : "#f44336"));
+            // High/low data labels
+            candle.append("text")
+                .attr("x", 0)
+                .attr("y", (d) => y(d.high) - 5)
+                .text(d => d.high.toFixed(2))
+                .attr("class", "data-label")
+                .attr("fill", mode === "dark" ? "white" : "black")
+                .style("font-size", "12px");
+
+            candle.append("text")
+                .attr("x", 0)
+                .attr("y", (d) => y(d.low) + 15)
+                .text(d => d.low.toFixed(2))
+                .attr("class", "data-label")
+                .attr("fill", mode === "dark" ? "white" : "black")
+                .style("font-size", "12px");
         };
-        drawChart()
-        // Update in wheel event:
+
+        // ✅ Initial draw
+        updateAxes();
+        drawChart();
+
+        // ✅ On zoom, update the domain and redraw
         svg.on("wheel", (event) => {
             event.preventDefault();
 
             const { deltaY } = event;
             const direction = deltaY > 0 ? 1.1 : 0.9;
 
-            // X-Axis Scaling (Keep Last Element Visible)
             const [xStart, xEnd] = x.domain();
             const newXDomain = [
                 new Date(xEnd.getTime() - (xEnd.getTime() - xStart.getTime()) * direction),
@@ -161,32 +186,24 @@ const CandlestickBarChart: React.FC = () => {
 
             x.domain(newXDomain);
 
-            // Filter data for visible range
             const visibleData = stockData.filter(
                 (d) => d.date >= newXDomain[0] && d.date <= newXDomain[1]
             );
 
             if (visibleData.length > 0) {
-                const yMin = d3.min(visibleData, (d) => d.low) as number;
-                const yMax = d3.max(visibleData, (d) => d.high) as number;
+                const yMin = d3.min(visibleData, (d) => d.low)!;
+                const yMax = d3.max(visibleData, (d) => d.high)!;
 
-                // Stretch Y-axis with padding but keep the last element visible
                 const padding = (yMax - yMin) * 0.2;
                 y.domain([yMin - padding, yMax + padding]);
             }
 
-            // Update axes
-            xAxis.call(d3.axisBottom(x).ticks(width / 80).tickSizeOuter(0));
-            yAxis.call(d3.axisLeft(y).ticks(height / 40));
-
-            // Redraw chart with updated bar width
-            drawChart();
+            updateAxes(); // ✅ Update axes without clearing them
+            drawChart();  // ✅ Redraw chart without deleting axes
         });
 
-
-
-
     }, [data, mode]);
+
 
 
     return (

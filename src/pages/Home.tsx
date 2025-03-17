@@ -2,16 +2,9 @@
 import LineGraph from '../components/LineGraph'
 "use client"
 import {
-    Box, Text, Button, Heading, Modal,
-    ModalOverlay,
-    ModalContent,
-    ModalHeader,
-    ModalFooter,
-    ModalBody,
-    ModalCloseButton,
-    useDisclosure
+    Box, Text, Button, Heading,
 } from '@chakra-ui/react'
-import Full from './FullScreen';
+
 
 
 import { AppDispatch } from "../store/store";
@@ -26,7 +19,7 @@ import Loader from '../components/Loader';
 const Home = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch<AppDispatch>();
-    const { isOpen, onOpen, onClose } = useDisclosure()
+
 
     const scrollRef = useRef<HTMLDivElement | null>(null);
     const [select, setSelect] = useState("A");
@@ -128,25 +121,26 @@ const Home = () => {
             justifyContent="center"
             alignItems="center"
             w="100%"
-            h="100vh"
-            flexDirection="column"
+            h={{ base: "230vh", lg: "100vh" }}
+            flexDirection={{ base: "column-reverse", lg: "row" }}
             bgColor={mode == "dark" ? "rgba(12, 12, 12,0.9)" : "white"}
 
         >
 
             <Box
                 display="flex"
-
-                justifyContent="space-around"
+                flexDirection={{ base: "column-reverse", lg: "row" }}
+                justifyContent={{ base: "flex-end", lg: "space-around" }}
                 alignItems="center"
                 w="100%"
                 h="100%"
+                pt={{ base: "30px", lg: "0" }}
             >
                 {status !== "loading" ?
                     <Box
                         w="100%"
-                        h="93vh"
-                        display="flex"
+                        h={{ base: "110vh", lg: "93vh" }}
+                        display={{ base: "flex", lg: "flex" }}
                         flexDirection="column"
                         justifyContent="space-around"
 
@@ -154,9 +148,9 @@ const Home = () => {
 
                     >
                         <Box
-                            w="60%"
+                            w={{ base: "90%", lg: "60%" }}
                             h="60vh"
-                            display="flex"
+                            display={{ base: "flex", lg: "flex" }}
                             flexDirection="column"
                             justifyContent="space-between"
 
@@ -165,10 +159,15 @@ const Home = () => {
                             <Box
                                 display="flex"
                                 flexDirection="column"
-                                h="100px"
+                                h={{ base: "80px", lg: "100px" }}
+
                             >
                                 <Heading
-                                    sx={{ ...HeadingStyle, fontSize: "2rem", height: "50px", justifyContent: "center" }}
+                                    sx={{
+                                        ...HeadingStyle, height: "50px",
+                                        justifyContent: "center"
+                                    }}
+                                    fontSize={{ base: "1.5rem", lg: "2rem" }}
                                 >
                                     {
                                         // Ensure tip.date is a valid string and format it to show month, day, and year
@@ -180,17 +179,19 @@ const Home = () => {
                             <Box
                                 display="flex"
                                 flexDirection="column"
-                                h="100px"
+                                h={{ base: "80px", lg: "100px" }}
                             >
                                 <Heading
-                                    sx={{ ...HeadingStyle, fontSize: "2rem", height: "50px", }}
+                                    sx={{ ...HeadingStyle, height: "50px", }}
+                                    fontSize={{ base: "1.5rem", lg: "2rem" }}
 
                                 >
                                     Close:
                                 </Heading>
                                 <Heading
-                                    sx={{ ...HeadingStyle, justifyContent: "flex-end", fontSize: "2rem", height: "50px" }}
-                                >
+                                    sx={{ ...HeadingStyle, justifyContent: "flex-end", height: "50px" }}
+
+                                    fontSize={{ base: "1.5rem", lg: "2rem" }}>
                                     $ {tip.close ? tip.close?.toFixed(2) : data[data.length - 1]?.Close?.toFixed(2)}
                                 </Heading>
                             </Box>
@@ -200,13 +201,15 @@ const Home = () => {
 
                             >
                                 <Heading
-                                    sx={{ ...HeadingStyle, fontSize: "2rem", height: "50px" }}
-                                >
+                                    sx={{ ...HeadingStyle, height: "50px" }}
+
+                                    fontSize={{ base: "1.5rem", lg: "2rem" }}>
                                     Open:
                                 </Heading>
                                 <Heading
-                                    sx={{ ...HeadingStyle, justifyContent: "flex-end", fontSize: "2rem", height: "50px" }}
-                                >
+                                    sx={{ ...HeadingStyle, justifyContent: "flex-end", height: "50px" }}
+
+                                    fontSize={{ base: "1.5rem", lg: "2rem" }}>
                                     $  {tip.open ? tip.open.toFixed(2) : data[data.length - 1]?.Open.toFixed(2)}
                                 </Heading>
                             </Box>
@@ -216,13 +219,15 @@ const Home = () => {
 
                             >
                                 <Heading
-                                    sx={{ ...HeadingStyle, fontSize: "2rem", height: "50px", }}
+                                    sx={{ ...HeadingStyle, height: "50px", }}
+                                    fontSize={{ base: "1.5rem", lg: "2rem" }}
                                 >
                                     High:
                                 </Heading>
                                 <Heading
-                                    sx={{ ...HeadingStyle, justifyContent: "flex-end", fontSize: "2rem", height: "50px" }}
-                                >
+                                    sx={{ ...HeadingStyle, justifyContent: "flex-end", height: "50px" }}
+
+                                    fontSize={{ base: "1.5rem", lg: "2rem" }}>
                                     $  {tip.high ? tip.high.toFixed(2) : data[data.length - 1]?.High?.toFixed(2)}
                                 </Heading>
                             </Box>
@@ -230,16 +235,18 @@ const Home = () => {
                                 display="flex"
                                 flexDirection="column"
 
-                                h="100px"
+                                h={{ base: "80px", lg: "100px" }}
                             >
                                 <Heading
-                                    sx={{ ...HeadingStyle, fontSize: "2rem", height: "50px", }}
+                                    sx={{ ...HeadingStyle, height: "50px", }}
+                                    fontSize={{ base: "1.5rem", lg: "2rem" }}
                                 >
                                     Low:
                                 </Heading>
                                 <Heading
-                                    sx={{ ...HeadingStyle, justifyContent: "flex-end", fontSize: "2rem", height: "50px" }}
-                                >
+                                    sx={{ ...HeadingStyle, justifyContent: "flex-end", height: "50px" }}
+
+                                    fontSize={{ base: "1.5rem", lg: "2rem" }}>
                                     $   {tip.low ? tip.low.toFixed(2) : data[data.length - 1]?.Low?.toFixed(2)}
                                 </Heading>
                             </Box>
@@ -249,25 +256,28 @@ const Home = () => {
 
                             >
                                 <Heading
-                                    sx={{ ...HeadingStyle, fontSize: "2rem", height: "50px", }}
+                                    sx={{ ...HeadingStyle, height: "50px", }}
+                                    fontSize={{ base: "1.5rem", lg: "2rem" }}
                                 >
                                     Volume:
                                 </Heading>
                                 <Heading
-                                    sx={{ ...HeadingStyle, justifyContent: "flex-end", fontSize: "2rem", height: "50px" }}
-                                >
+                                    sx={{ ...HeadingStyle, justifyContent: "flex-end", height: "50px" }}
+
+                                    fontSize={{ base: "1.5rem", lg: "2rem" }}>
                                     {tip.volume ? tip.volume.toFixed(2) : data[data.length - 1]?.Volume.toFixed(2)}
                                 </Heading>
                             </Box>
                         </Box>
                         <Box
-                            w="35vw"
-                            h="25vh"
-                            display="flex"
+                            w={{ base: "80vw", lg: "35vw" }}
+                            h={{ base: "40vh", lg: "25vh" }}
+                            display={{ base: "flex", lg: "flex" }}
 
                         >
                             <Text
                                 sx={{ ...HeadingStyle, fontSize: "1.5rem" }}
+                                textAlign="center"
                             >
                                 On  {
 
@@ -284,7 +294,7 @@ const Home = () => {
                         </Box>
                     </Box>
                     : <Box
-                        w="20%"
+                        w="100%"
                         h="700px"
                         display="flex"
                         flexDirection="column"
@@ -295,8 +305,8 @@ const Home = () => {
                         <Loader />
                     </Box>}
                 <Box
-                    w="70%"
-                    h="93vh"
+                    w={{ base: "90%", lg: "70%" }}
+                    h={{ base: "60vh", lg: "93vh" }}
                     display="flex"
                     justifyContent="flex-start"
                     alignItems="center"
@@ -305,7 +315,7 @@ const Home = () => {
                 >
                     <Box
                         position="relative"
-                        width="60vw" maxW="2000px" h="100px"
+                        width={{ base: "100vw", lg: "60vw" }} maxW="2000px" h={{ base: "250px", lg: "100px" }}
                         display="flex"
                         justifyContent="flex-end" alignItems="flex-end" overflowX={'scroll'} overflowY='hidden'
                         css={{
@@ -324,14 +334,15 @@ const Home = () => {
                             aria-label="Scroll Left"
                             position="absolute"
                             left="15px"
-                            top="45%"
+                            top={{ base: "60%", lg: "45%" }}
                             transform="translateY(-50%)"
                             zIndex={10}
                             onClick={() => scroll("left")}
                             bg="gray.200"
                             _hover={{ bg: "gray.300" }}
+                            _active={{}}
                             rounded="full"
-
+                            w={{ base: "45px", lg: "50px" }}
                         >
                             {/* <ArrowBackIos /> */}
                             <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="black">
@@ -345,9 +356,9 @@ const Home = () => {
                             justifyContent="flex-start"
                             alignItems="center"
                             // pl="160px"
-                            h="100px"
+                            h={{ base: "80px", lg: "100px" }}
                             ref={scrollRef}
-                            gap={10}
+                            gap={{ base: 2, lg: 10 }}
                             overflowX="auto" // Ensure scroll works
                             scrollBehavior="smooth"
                             whiteSpace="nowrap"
@@ -364,13 +375,13 @@ const Home = () => {
                             {items.map((item) => (
                                 <Button
                                     key={item.value}
-                                    minW="190px"
+                                    minW={{ base: "170px", lg: "190px" }}
                                     p={4}
                                     bgColor={select === item.value ? "#F2F2F2" : "transparent"}
                                     rounded="xl"
                                     onClick={() => handlePush(item)}
                                     textAlign="center"
-                                    h="80px"
+                                    h={{ base: "60px", lg: "80px" }}
                                     onMouseEnter={() => { setIsHovered(true), setHovered(item.value) }}
                                     onMouseLeave={() => { setIsHovered(false), setHovered("") }}
                                     _hover={{
@@ -380,7 +391,7 @@ const Home = () => {
                                     role="group"
                                     _active={{ bgColor: "#F2F2F2" }}
                                 >
-                                    <Text fontSize="16px" fontWeight="bold" color={select === item.value ? "black" : Hovered === item.value ? "black" : mode === "dark" ? "white" : "black"}
+                                    <Text fontSize={{ base: "13px", lg: "16px" }} fontWeight="bold" color={select === item.value ? "black" : Hovered === item.value ? "black" : mode === "dark" ? "white" : "black"}
                                         // Change color when the parent (group) is hovered
                                         as="span"
                                         mr="4px"
@@ -398,14 +409,15 @@ const Home = () => {
                         <Button
                             aria-label="Scroll Right"
                             position="absolute"
-                            right="30px"
-                            top="45%"
+                            right={{ base: "10px", lg: "30px" }}
+                            top={{ base: "60%", lg: "45%" }}
                             transform="translateY(-50%)"
                             zIndex={10}
                             onClick={() => scroll("right")}
                             bg="gray.200"
                             _hover={{ bg: "gray.300" }}
                             rounded="full"
+                            w={{ base: "45px", lg: "50px" }}
                         >
                             {/* <ArrowForwardIos /> */}
                             <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="black">
@@ -415,48 +427,43 @@ const Home = () => {
                     </Box>
                     <Box
                         display="flex"
-                        w="60vw"
-                        h="700px"
+                        w={{ base: "90vw", lg: "60vw" }}
+                        h={{ base: "700px", lg: "700px" }}
                         mt="20px"
                         pl="15px"
+                        justifyContent={{ base: "flex-end", lg: "center" }}
+                        alignItems="center"
+                        flexDirection={{ base: "column-reverse", lg: "row" }}
+
                     >
                         <LineGraph />
-                        <Button
-                            w="2vw"
-                            h="5vh"
-                            onClick={() => { navigate("/chartFull") }}
-                            borderWidth="1px"
-                            borderColor={mode !== "dark" ? "rgba(0,0,0,0.35)" : "rgba(255,255 ,255,0.35)"}
-                            p="0"
-                            borderRadius="5px"
-                            bgColor={mode == "dark" ? "rgba(12, 12, 12,0.9)" : "white"}
-                            _hover={{ bgColor: "transparent" }}
+                        <Box
+                            display="flex"
+                            w={{ base: "60px", lg: "70px" }}
+                            h={{ base: "50px", lg: "700px" }}
+                            mb={{ base: "30px", lg: "none" }}
+                            justifyContent="center"
+                            alignItems="flex-start"
                         >
-                            {/* <Fullscreen sx={{ fontSize: "40px", color: mode !== "dark" ? "rgba(12, 12, 12,0.9)" : "white" }} /> */}
-                            <svg xmlns="http://www.w3.org/2000/svg" height="35px" viewBox="0 -960 960 960" width="50px" fill={mode === "dark" ? "white" : "black"}>
-                                <path d="M120-120v-200h80v120h120v80H120Zm520 0v-80h120v-120h80v200H640ZM120-640v-200h200v80H200v120h-80Zm640 0v-120H640v-80h200v200h-80Z" />
-                            </svg>
-                        </Button>
-                    </Box>
-                    <Modal onClose={onClose} size={"full"} isOpen={isOpen}>
-
-                        <ModalContent
-                            bgColor={mode == "dark" ? "rgba(12, 12, 12,0.9)" : "white"}
-
-                        >
-
-                            <ModalCloseButton color={mode !== "dark" ? "rgba(12, 12, 12,0.9)" : "white"} mr="20px" />
-                            <ModalBody
-                                display="flex"
-                                justifyContent="center"
-                                alignItems="center"
-                                bgColor={mode == "dark" ? "rgba(12, 12, 12,0.5)" : "white"}
+                            <Button
+                                w="2vw"
+                                h="5vh"
+                                onClick={() => { navigate("/chartFull") }}
+                                borderWidth="1px"
+                                borderColor={mode !== "dark" ? "rgba(0,0,0,0.35)" : "rgba(255,255 ,255,0.35)"}
+                                p="0"
+                                borderRadius="5px"
+                                bgColor={mode == "dark" ? "rgba(12, 12, 12,0.9)" : "white"}
+                                _hover={{ bgColor: "transparent" }}
                             >
-                                <Full />
-                            </ModalBody>
+                                {/* <Fullscreen sx={{ fontSize: "40px", color: mode !== "dark" ? "rgba(12, 12, 12,0.9)" : "white" }} /> */}
+                                <svg xmlns="http://www.w3.org/2000/svg" height="35px" viewBox="0 -960 960 960" width="50px" fill={mode === "dark" ? "white" : "black"}>
+                                    <path d="M120-120v-200h80v120h120v80H120Zm520 0v-80h120v-120h80v200H640ZM120-640v-200h200v80H200v120h-80Zm640 0v-120H640v-80h200v200h-80Z" />
+                                </svg>
+                            </Button>
+                        </Box>
+                    </Box>
 
-                        </ModalContent>
-                    </Modal>
                 </Box>
 
             </Box>
