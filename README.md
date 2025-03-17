@@ -7,12 +7,17 @@ The data is retrieved from Supabase according to the company selected by the use
 
 ## Features Implemented
 
-  -Tooltip: Display data details when hovering over a data point.
-  -Zoom & Pan: Allow users to zoom and explore chart details.
-  -Data Labels: Show values directly on data points or bars.
-  -Custom Themes: Implement a light/dark mode or color customization.
+  - Tooltip: Display data details when hovering over a data point.
+  - Zoom & Pan: Allow users to zoom and explore chart details.
+  - Data Labels: Show values directly on data points or bars.
+  - Custom Themes: Implement a light/dark mode or color customization.
 
 ## Bonus (Optional Enhancements for Extra Credit)
+  - Animations & Transitions: Smooth element movement on update.
+  - Dark Mode Support.
+  - Multi-chart dashboard: Combining a candlestick and bar chart.
+  - Live Deployment on Vercel, 
+
 
 ## Instruction to run locally
   ```bash
@@ -23,15 +28,16 @@ The data is retrieved from Supabase according to the company selected by the use
   ```
 
 ## Tech Stack
-  --React.js
-  --React Redux
-  --D3.js
-  --Chakra ui / CSS / Styled Components for Styling
-  --TypeScript
-  --Supabase
+  - React.js
+  - React Redux
+  - D3.js
+  - Chakra ui / CSS / Styled Components for Styling
+  - TypeScript
+  - Supabase
+
 ## Live Deployment
-  --The project is deployed using Vercel
-  --[Link Text](https://edilitics-uoao.vercel.app/)
+  - The project is deployed using Vercel
+  - [Link Text](https://edilitics-uoao.vercel.app/)
 
 
 
