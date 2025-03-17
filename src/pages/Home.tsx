@@ -113,7 +113,7 @@ const Home = () => {
         alignItems: "center",
     };
 
-    const [isHovered, setIsHovered] = useState(false);
+
     const [Hovered, setHovered] = useState("");
     return (
         <Box
@@ -382,8 +382,8 @@ const Home = () => {
                                     onClick={() => handlePush(item)}
                                     textAlign="center"
                                     h={{ base: "60px", lg: "80px" }}
-                                    onMouseEnter={() => { setIsHovered(true), setHovered(item.value) }}
-                                    onMouseLeave={() => { setIsHovered(false), setHovered("") }}
+                                    onMouseEnter={() => { setHovered(item.value) }}
+                                    onMouseLeave={() => { setHovered("") }}
                                     _hover={{
                                         bgColor: "#F2F2F2",
 
