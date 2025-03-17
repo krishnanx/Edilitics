@@ -6,25 +6,26 @@ import { Provider } from "react-redux";
 import store from './store/store';
 import { createBrowserRouter, createRoutesFromElements, Route, RouterProvider } from 'react-router-dom'
 import Layout from './pages/Layout';
-import FullScreen from './pages/FullScreen';
+import Full from './pages/FullScreen';
+
 function App() {
 
 
   const router = createBrowserRouter(createRoutesFromElements(
     <Route path="/" element={<Layout />}>
       <Route index element={<Home />}></Route>
-      <Route path="/chartFull" element={<FullScreen />}></Route>
+      <Route path="/chartFull" element={<Full />}></Route>
 
     </Route>
   ))
   return (
     <>
       <Box
-        w="100vw"
+        w="99.2vw"
         h="100vh"
 
         display="flex"
-        bgColor="white"
+
         flexDirection="column"
       >
         <Provider store={store}>

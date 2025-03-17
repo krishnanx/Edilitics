@@ -3,9 +3,9 @@ import CandlestickBarChart from "../components/CandleStick"
 import { useSelector } from "react-redux";
 import { Button } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
-import { FullscreenExit } from "@mui/icons-material";
+// import { FullscreenExit } from "@mui/icons-material";
 
-const FullScreen = () => {
+const Full = () => {
     const navigate = useNavigate();
     interface modeState {
         mode: string; // or whatever type `data` holds
@@ -21,8 +21,8 @@ const FullScreen = () => {
     return (
         <Box
             display="flex"
-            w="99.5vw"
-            h="100vh"
+            w="100%"
+            h="105vh"
             justifyContent="center"
             alignItems="center"
             bgColor={mode == "dark" ? "rgba(12, 12, 12,0.9)" : "white"}
@@ -36,7 +36,7 @@ const FullScreen = () => {
                 justifyContent="center"
                 alignItems="center"
                 w="90%"
-                h="80vh"
+                h="50vh"
             >
                 <CandlestickBarChart />
             </Box>
@@ -49,7 +49,7 @@ const FullScreen = () => {
                 h="80vh"
             >
                 <Button
-                    w="1vw"
+                    w="2vw"
                     h="5vh"
                     onClick={() => { navigate("/") }}
                     borderWidth="1px"
@@ -57,12 +57,15 @@ const FullScreen = () => {
                     p="0"
                     borderRadius="5px"
                     bgColor={mode == "dark" ? "rgba(12, 12, 12,0.9)" : "white"}
+                    _hover={{ bgColor: "transparent" }}
                 >
-                    <FullscreenExit sx={{ fontSize: "40px", color: mode !== "dark" ? "rgba(12, 12, 12,0.9)" : "white" }} />
+                    <svg xmlns="http://www.w3.org/2000/svg" height="35px" viewBox="0 -960 960 960" width="24px" fill={mode === "dark" ? "white" : "black"}>
+                        <path d="M240-120v-120H120v-80h200v200h-80Zm400 0v-200h200v80H720v120h-80ZM120-640v-80h120v-120h80v200H120Zm520 0v-200h80v120h120v80H640Z" />
+                    </svg>
                 </Button>
-            </Box>
-        </Box>
+            </Box >
+        </Box >
     )
 }
 
-export default FullScreen
+export default Full

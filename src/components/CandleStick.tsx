@@ -48,7 +48,7 @@ const CandlestickBarChart: React.FC = () => {
         if (!stockData || !chartRef.current) return;
 
         const width = 1950;
-        const height = 900;
+        const height = 700;
         const margin = { top: 20, right: 30, bottom: 30, left: 40 };
         const barHeight = 100;
 
@@ -94,6 +94,7 @@ const CandlestickBarChart: React.FC = () => {
             .style("font-size", "12px");
 
         // Draw chart based on x-scale domain
+        // Inside drawChart function:
         const drawChart = () => {
             // Clear existing chart
             g.selectAll(".candle").remove();
@@ -103,6 +104,9 @@ const CandlestickBarChart: React.FC = () => {
             const visibleData = stockData.filter(d =>
                 d.date >= x.domain()[0] && d.date <= x.domain()[1]
             );
+
+            // Dynamically calculate bar width based on visible data count
+            const barWidth = Math.max(5, (width - margin.left - margin.right) / visibleData.length * 0.65);
 
             // Candle group
             const candle = g.append("g")
@@ -122,11 +126,11 @@ const CandlestickBarChart: React.FC = () => {
             candle.append("rect")
                 .attr("y", (d) => y(Math.max(d.open, d.close)))
                 .attr("height", (d) => Math.abs(y(d.open) - y(d.close)))
-                .attr("width", 5)
+                .attr("width", barWidth)
+                .attr("x", -barWidth / 2)
                 .attr("fill", (d) => (d.open > d.close ? "#e63946" : "#2a9d8f"));
 
             // Volume bars
-            const barWidth = 10;
             g.append("g")
                 .selectAll("rect")
                 .data(visibleData)
@@ -138,10 +142,8 @@ const CandlestickBarChart: React.FC = () => {
                 .attr("height", (d) => yVolume(0) - yVolume(d.volume))
                 .attr("fill", (d) => (d.close >= d.open ? "#4caf50" : "#f44336"));
         };
-
-        // Draw the chart initially
-        drawChart();
-
+        drawChart()
+        // Update in wheel event:
         svg.on("wheel", (event) => {
             event.preventDefault();
 
@@ -152,7 +154,7 @@ const CandlestickBarChart: React.FC = () => {
             const [xStart, xEnd] = x.domain();
             const newXDomain = [
                 new Date(xEnd.getTime() - (xEnd.getTime() - xStart.getTime()) * direction),
-                xEnd, //Fixes the last element in place
+                xEnd,
             ];
 
             if (newXDomain[0] < stockData[0].date) newXDomain[0] = stockData[0].date;
@@ -177,9 +179,10 @@ const CandlestickBarChart: React.FC = () => {
             xAxis.call(d3.axisBottom(x).ticks(width / 80).tickSizeOuter(0));
             yAxis.call(d3.axisLeft(y).ticks(height / 40));
 
-            // Redraw chart
+            // Redraw chart with updated bar width
             drawChart();
         });
+
 
 
 
