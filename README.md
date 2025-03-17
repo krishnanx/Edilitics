@@ -12,10 +12,7 @@ The data is retrieved from Supabase according to the company selected by the use
   -Data Labels: Show values directly on data points or bars.
   -Custom Themes: Implement a light/dark mode or color customization.
 
-## Responsive ui
-  -The project is made to adapt to mobile and such small screen size
-
-
+## Bonus (Optional Enhancements for Extra Credit)
 
 ## Instruction to run locally
   ```bash
@@ -24,6 +21,7 @@ The data is retrieved from Supabase according to the company selected by the use
   ```bash
     npm run dev
   ```
+
 ## Tech Stack
   --React.js
   --React Redux
