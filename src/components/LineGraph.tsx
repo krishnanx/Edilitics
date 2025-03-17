@@ -206,7 +206,7 @@ const LineChart: React.FC = () => {
             .on("mouseout", () => {
                 tooltip.transition().duration(200).style("opacity", 0);
             })
-            .on("click", (d) => {
+            .on("click", (_, d) => {
 
                 const dateString = d.date.toLocaleDateString('en-US');
                 console.log(dateString)
