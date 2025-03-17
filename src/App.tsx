@@ -2,14 +2,24 @@
 import './App.css'
 import { Box } from '@chakra-ui/react'
 import Home from './pages/Home'
-import { Provider } from "react-redux";
-import store from './store/store';
+
 import { createBrowserRouter, createRoutesFromElements, Route, RouterProvider } from 'react-router-dom'
 import Layout from './pages/Layout';
 import Full from './pages/FullScreen';
+import { useSelector } from 'react-redux';
 
 function App() {
+  interface modeState {
+    mode: string; // or whatever type `data` holds
 
+  }
+
+  interface RootState {
+    mode: modeState;
+  }
+  const { mode } = useSelector(
+    (state: RootState) => state.mode || { mode: "light" }
+  ) as modeState;
 
   const router = createBrowserRouter(createRoutesFromElements(
     <Route path="/" element={<Layout />}>
@@ -27,11 +37,12 @@ function App() {
         flexDirection="column"
         justifyContent={{ base: "flex-start", lg: "center" }}
         alignItems="center"
+        bgColor={mode == "dark" ? "rgba(12, 12, 12,0.4)" : "white"}
 
       >
-        <Provider store={store}>
-          <RouterProvider router={router} />
-        </Provider>
+
+        <RouterProvider router={router} />
+
 
       </Box>
     </>
