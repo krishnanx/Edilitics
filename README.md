@@ -15,8 +15,15 @@ The data is retrieved from Supabase according to the company selected by the use
 ## Responsive ui
   -The project is made to adapt to mobile and such small screen size
 
+## Instruction to run locally
+  ```bash
+    npm install
+  ```
+  ```bash
+    npm run dev
+  ```
 
-  
+
 ```js
 export default tseslint.config({
   extends: [
